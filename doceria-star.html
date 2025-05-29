@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doceria Star - Painel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: all 0.5s ease;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b8b;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #ff6b8b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff4d73;
+        }
+
+        .images-container {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 1s;
+        }
+
+        .image-box {
+            margin: 25px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff9f9;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .image-title {
+            margin: 15px 0 5px;
+            font-weight: bold;
+            color: #ff6b8b;
+        }
+
+        .recipe-link {
+            color: #ff6b8b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 5px;
+            border-bottom: 1px dashed #ff6b8b;
+            transition: all 0.3s;
+        }
+
+        .recipe-link:hover {
+            color: #ff4d73;
+            border-bottom-color: #ff4d73;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <div class="logo">Doceria Star</div>
+        <h2>Painel de Confeiteiro</h2>
+        
+        <input type="email" id="email" placeholder="Seu e-mail" required>
+        <input type="password" id="password" placeholder="Sua senha" required>
+        
+        <div class="error" id="errorMessage">E-mail ou senha incorretos</div>
+        
+        <button onclick="login()">Acessar</button>
+    </div>
+
+    <div class="container" id="contentContainer" style="display: none;">
+        <div class="logo">Doceria Star</div>
+        <h2>Inspiração do Dia</h2>
+        
+        <div class="loading" id="loading">Carregando receitas...</div>
+        
+        <div class="images-container" id="imagesContainer">
+            <div class="image-box">
+                <img id="cakeImage" alt="Bolo artístico">
+                <div class="image-title">Bolo de Chocolate</div>
+                <a href="https://www.tudogostoso.com.br/receita/62547-a-melhor-receita-de-bolo-de-chocolate.html" class="recipe-link" target="_blank">Ver receita completa</a>
+            </div>
+            
+            <div class="image-box">
+                <img id="cookieImage" alt="Cookie gourmet">
+                <div class="image-title">Cookie Americano</div>
+                <a href="https://www.tudogostoso.com.br/receita/10254-cookie-americano-perfeito.html" class="recipe-link" target="_blank">Ver receita completa</a>
+            </div>
+        </div>
+        
+        <button onclick="logout()" style="background-color: #666; margin-top: 15px;">Sair</button>
+    </div>
+
+    <script>
+        // Lista de imagens pré-definidas para garantir que sempre carreguem
+        const cakeImages = [
+            'https://img.freepik.com/fotos-gratis/bolo-de-chocolate-delicioso-isolado_141793-2718.jpg',
+            'https://img.freepik.com/fotos-gratis/bolo-de-chocolate-com-cobertura-de-chocolate_144627-8998.jpg',
+            'https://img.freepik.com/fotos-gratis/bolo-de-aniversario-de-chocolate_114579-13096.jpg'
+        ];
+
+        const cookieImages = [
+            'https://img.freepik.com/fotos-gratis/cookies-caseiros-isolados_141793-1551.jpg',
+            'https://img.freepik.com/fotos-gratis/deliciosos-cookies-de-chocolate-caseiros_23-2148917287.jpg',
+            'https://img.freepik.com/fotos-gratis/cookies-de-chocolate-em-uma-tabua-de-madeira_1150-23438.jpg'
+        ];
+
+        // Função de login simulada
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Validação simples
+            if (email.includes('@') && password.length > 3) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('contentContainer').style.display = 'block';
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('imagesContainer').style.display = 'none';
+                
+                errorMessage.style.display = 'none';
+                
+                // Simula tempo de carregamento
+                setTimeout(() => {
+                    generateImages();
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('imagesContainer').style.display = 'block';
+                }, 1000);
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        }
+        
+        // Função para gerar imagens
+        function generateImages() {
+            // Seleciona imagens aleatórias das listas pré-definidas
+            const randomCake = Math.floor(Math.random() * cakeImages.length);
+            const randomCookie = Math.floor(Math.random() * cookieImages.length);
+            
+            // Carrega as imagens
+            document.getElementById('cakeImage').src = cakeImages[randomCake];
+            document.getElementById('cookieImage').src = cookieImages[randomCookie];
+            
+            // Adiciona tratamento de erro para imagens
+            document.getElementById('cakeImage').onerror = function() {
+                this.src = 'https://via.placeholder.com/600x400?text=Bolo+de+Chocolate';
+            };
+            
+            document.getElementById('cookieImage').onerror = function() {
+                this.src = 'https://via.placeholder.com/600x400?text=Cookie+Americano';
+            };
+        }
+        
+        // Função de logout
+        function logout() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('contentContainer').style.display = 'none';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // Permitir login com Enter
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        // Pré-carrega imagens para melhor performance
+        window.onload = function() {
+            cakeImages.forEach(img => {
+                (new Image()).src = img;
+            });
+            cookieImages.forEach(img => {
+                (new Image()).src = img;
+            });
+        };
+    </script>
+</body>
+</html>
