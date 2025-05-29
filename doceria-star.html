@@ -3,245 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doceria Star - Painel</title>
+    <title>Doceria Galáctica Star</title>
     <style>
+        :root {
+            --deep-space: #0f0c29;
+            --nebula-purple: #7b2d8f;
+            --stardust-pink: #ff4d8d;
+            --cosmic-blue: #302b63;
+            --milky-way: #f8f5ff;
+            --comet-yellow: #ffe347;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #fff5f5;
+            font-family: 'Orbitron', 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--deep-space), var(--cosmic-blue));
+            color: var(--milky-way);
             margin: 0;
             padding: 0;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .recipe-card {
+            background: rgba(15, 12, 41, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 25px var(--nebula-purple);
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 1px solid var(--stardust-pink);
+            backdrop-filter: blur(5px);
+        }
+        
+        .recipe-header {
+            background: linear-gradient(90deg, var(--nebula-purple), var(--stardust-pink));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recipe-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: starlight 15s infinite linear;
+        }
+        
+        .recipe-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .recipe-image {
+            border-radius: 10px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            box-shadow: 0 0 15px var(--stardust-pink);
+            border: 2px solid var(--comet-yellow);
+            transition: transform 0.5s ease;
+        }
+        
+        .recipe-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .ingredients-list, .instructions {
+            background: rgba(48, 43, 99, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid var(--stardust-pink);
+        }
+        
+        h1, h2, h3 {
+            color: var(--comet-yellow);
+            text-shadow: 0 0 5px var(--stardust-pink);
+        }
+        
+        .rating {
+            color: var(--comet-yellow);
+            font-size: 1.2em;
+            margin: 10px 0;
             display: flex;
             justify-content: center;
+        }
+        
+        .time-info {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .time-item {
+            display: flex;
             align-items: center;
-            min-height: 100vh;
-            transition: all 0.5s ease;
+            gap: 5px;
+            background: rgba(123, 45, 143, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--stardust-pink);
         }
-
-        .container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
+        
+        ul, ol {
+            padding-left: 20px;
         }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff6b8b;
-            margin-bottom: 20px;
+        
+        li {
+            margin-bottom: 8px;
+            position: relative;
         }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
+        
+        li::before {
+            content: "✦";
+            color: var(--stardust-pink);
+            position: absolute;
+            left: -15px;
         }
-
-        button {
-            background-color: #ff6b8b;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-            margin-top: 10px;
-            transition: background-color 0.3s;
+        
+        @keyframes starlight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        button:hover {
-            background-color: #ff4d73;
-        }
-
-        .images-container {
-            display: none;
-            margin-top: 30px;
-            animation: fadeIn 1s;
-        }
-
-        .image-box {
-            margin: 25px 0;
-            padding: 15px;
-            border-radius: 10px;
-            background-color: #fff9f9;
-        }
-
-        .image-box img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .image-title {
-            margin: 15px 0 5px;
-            font-weight: bold;
-            color: #ff6b8b;
-        }
-
-        .recipe-link {
-            color: #ff6b8b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin-top: 5px;
-            border-bottom: 1px dashed #ff6b8b;
-            transition: all 0.3s;
-        }
-
-        .recipe-link:hover {
-            color: #ff4d73;
-            border-bottom-color: #ff4d73;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .error {
-            color: red;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .loading {
-            display: none;
-            margin: 20px 0;
-            color: #666;
+        
+        @media (max-width: 768px) {
+            .recipe-content {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container" id="loginContainer">
-        <div class="logo">Doceria Star</div>
-        <h2>Painel de Confeiteiro</h2>
-        
-        <input type="email" id="email" placeholder="Seu e-mail" required>
-        <input type="password" id="password" placeholder="Sua senha" required>
-        
-        <div class="error" id="errorMessage">E-mail ou senha incorretos</div>
-        
-        <button onclick="login()">Acessar</button>
-    </div>
-
-    <div class="container" id="contentContainer" style="display: none;">
-        <div class="logo">Doceria Star</div>
-        <h2>Inspiração do Dia</h2>
-        
-        <div class="loading" id="loading">Carregando receitas...</div>
-        
-        <div class="images-container" id="imagesContainer">
-            <div class="image-box">
-                <img id="cakeImage" alt="Bolo artístico">
-                <div class="image-title">Bolo de Chocolate</div>
-                <a href="https://www.tudogostoso.com.br/receita/62547-a-melhor-receita-de-bolo-de-chocolate.html" class="recipe-link" target="_blank">Ver receita completa</a>
+    <div class="container">
+        <!-- Receita de Bolo de Chocolate -->
+        <div class="recipe-card">
+            <div class="recipe-header">
+                <h1>Bolo de Chocolate Estelar</h1>
+                <div class="rating">★★★★★ (4.5/5 - 400 avaliações)</div>
+                <div class="time-info">
+                    <div class="time-item">⏱️ 50min total</div>
+                    <div class="time-item">🍰 Fácil</div>
+                    <div class="time-item">🍽️ 12 porções</div>
+                </div>
             </div>
             
-            <div class="image-box">
-                <img id="cookieImage" alt="Cookie gourmet">
-                <div class="image-title">Cookie Americano</div>
-                <a href="https://www.tudogostoso.com.br/receita/10254-cookie-americano-perfeito.html" class="recipe-link" target="_blank">Ver receita completa</a>
+            <div class="recipe-content">
+                <div>
+                    <img src="images/bolo-chocolate.jpg" alt="Bolo de Chocolate Galáctico" class="recipe-image">
+                    
+                    <h2>Ingredientes Cósmicos</h2>
+                    <div class="ingredients-list">
+                        <h3>Massa Intergaláctica:</h3>
+                        <ul>
+                            <li>3 ovos de estrela cadente</li>
+                            <li>1½ xícara de açúcar de nebulosa</li>
+                            <li>2 xícaras de farinha de trigo espacial</li>
+                            <li>1 xícara de pó de meteorito (cacau 70%)</li>
+                            <li>½ xícara de óleo de saturno</li>
+                            <li>1 colher (sopa) de fermento quântico</li>
+                            <li>Pitada de poeira lunar (sal)</li>
+                            <li>1 xícara de água de cometa (quente)</li>
+                        </ul>
+                        
+                        <h3>Cobertura da Via Láctea:</h3>
+                        <ul>
+                            <li>4 colheres (sopa) de leite de nebulosa</li>
+                            <li>½ xícara de pó de meteorito</li>
+                            <li>1 colher (sopa) de manteiga de aurora boreal</li>
+                            <li>1 xícara de açúcar estelar</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h2>Modo de Preparo Interplanetário</h2>
+                    <h3>Massa:</h3>
+                    <ol>
+                        <li>Bata no acelerador de partículas (liquidificador) os ovos, açúcar, óleo e chocolate</li>
+                        <li>Transfira para cápsula espacial (tigela) e incorpore farinha peneirada</li>
+                        <li>Adicione água de cometa e fermento quântico</li>
+                        <li>Asse em órbita geoestacionária (forno) a 200°C por 40 minutos terrestres</li>
+                    </ol>
+                    
+                    <h3>Cobertura Estelar:</h3>
+                    <ol>
+                        <li>Aqueça todos os ingredientes no núcleo de uma estrela anã (fogão)</li>
+                        <li>Regue o bolo ainda quente para criar um efeito de aurora boreal</li>
+                    </ol>
+                    
+                    <h3>Dicas do Astronauta Chef</h3>
+                    <ul>
+                        <li><strong>Supernova flavor:</strong> Adicione 50g de meteorito meio amargo derretido</li>
+                        <li><strong>Ponto de singularidade:</strong> Teste com sonda espacial (palito)</li>
+                        <li><strong>Sugestão Doceria Star:</strong> Sirva com gelado de anã branca (sorvete)</li>
+                    </ul>
+                </div>
             </div>
         </div>
         
-        <button onclick="logout()" style="background-color: #666; margin-top: 15px;">Sair</button>
+        <!-- Receita de Cookie Americano -->
+        <div class="recipe-card">
+            <div class="recipe-header">
+                <h1>Cookie da Via Láctea</h1>
+                <div class="rating">★★★★★ (4.5/5 - 1.121 avaliações)</div>
+                <div class="time-info">
+                    <div class="time-item">⏱️ 40min total</div>
+                    <div class="time-item">🍪 Médio</div>
+                    <div class="time-item">🍽️ 22 unidades</div>
+                </div>
+            </div>
+            
+            <div class="recipe-content">
+                <div>
+                    <img src="images/cookie-americano.jpg" alt="Cookie Galáctico" class="recipe-image">
+                    
+                    <h2>Ingredientes Alienígenas</h2>
+                    <div class="ingredients-list">
+                        <ul>
+                            <li>125g de manteiga de buraco negro (sem sal)</li>
+                            <li>¾ xícara de açúcar de quasar</li>
+                            <li>½ xícara de açúcar de pulsar</li>
+                            <li>1 ovo de galáxia</li>
+                            <li>1¾ xícara de farinha de matéria escura</li>
+                            <li>1 colher (chá) de fermento cósmico</li>
+                            <li>300g de chocolate de anel planetário</li>
+                            <li>1 colher (chá) de essência de supernova (baunilha)</li>
+                            <li>¼ xícara de nozes de asteróide</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h2>Modo de Preparo Extraterrestre</h2>
+                    <ol>
+                        <li>Misture a manteiga com os açúcares até formar uma nebulosa cremosa</li>
+                        <li>Incorpore o ovo galáctico e essência de supernova</li>
+                        <li>Adicione farinha de matéria escura peneirada</li>
+                        <li>Finalize com fermento cósmico e chocolate planetário</li>
+                        <li>Forme pequenos planetas e asse a 180°C por 12-15 minutos terrestres</li>
+                    </ol>
+                    
+                    <h3>Segredos do Universo</h3>
+                    <ul>
+                        <li><strong>Textura de anel planetário:</strong> Retire quando as bordas estiverem douradas</li>
+                        <li><strong>Tempo de curvatura espacial:</strong> Deixe a massa descansar 24h</li>
+                        <li><strong>Combinação intergaláctica:</strong> Chocolate de Andrômeda + sal de estrela</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script>
-        // Lista de imagens pré-definidas para garantir que sempre carreguem
-        const cakeImages = [
-            'https://img.freepik.com/fotos-gratis/bolo-de-chocolate-delicioso-isolado_141793-2718.jpg',
-            'https://img.freepik.com/fotos-gratis/bolo-de-chocolate-com-cobertura-de-chocolate_144627-8998.jpg',
-            'https://img.freepik.com/fotos-gratis/bolo-de-aniversario-de-chocolate_114579-13096.jpg'
-        ];
-
-        const cookieImages = [
-            'https://img.freepik.com/fotos-gratis/cookies-caseiros-isolados_141793-1551.jpg',
-            'https://img.freepik.com/fotos-gratis/deliciosos-cookies-de-chocolate-caseiros_23-2148917287.jpg',
-            'https://img.freepik.com/fotos-gratis/cookies-de-chocolate-em-uma-tabua-de-madeira_1150-23438.jpg'
-        ];
-
-        // Função de login simulada
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Validação simples
-            if (email.includes('@') && password.length > 3) {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('contentContainer').style.display = 'block';
-                document.getElementById('loading').style.display = 'block';
-                document.getElementById('imagesContainer').style.display = 'none';
-                
-                errorMessage.style.display = 'none';
-                
-                // Simula tempo de carregamento
-                setTimeout(() => {
-                    generateImages();
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('imagesContainer').style.display = 'block';
-                }, 1000);
-            } else {
-                errorMessage.style.display = 'block';
-            }
-        }
-        
-        // Função para gerar imagens
-        function generateImages() {
-            // Seleciona imagens aleatórias das listas pré-definidas
-            const randomCake = Math.floor(Math.random() * cakeImages.length);
-            const randomCookie = Math.floor(Math.random() * cookieImages.length);
-            
-            // Carrega as imagens
-            document.getElementById('cakeImage').src = cakeImages[randomCake];
-            document.getElementById('cookieImage').src = cookieImages[randomCookie];
-            
-            // Adiciona tratamento de erro para imagens
-            document.getElementById('cakeImage').onerror = function() {
-                this.src = 'https://via.placeholder.com/600x400?text=Bolo+de+Chocolate';
-            };
-            
-            document.getElementById('cookieImage').onerror = function() {
-                this.src = 'https://via.placeholder.com/600x400?text=Cookie+Americano';
-            };
-        }
-        
-        // Função de logout
-        function logout() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('contentContainer').style.display = 'none';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-        }
-        
-        // Permitir login com Enter
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
-        });
-
-        // Pré-carrega imagens para melhor performance
-        window.onload = function() {
-            cakeImages.forEach(img => {
-                (new Image()).src = img;
-            });
-            cookieImages.forEach(img => {
-                (new Image()).src = img;
-            });
-        };
-    </script>
 </body>
 </html>
